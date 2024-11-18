@@ -4,14 +4,12 @@ package ru.practicum.service.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
-import org.springframework.stereotype.Repository;
 import ru.practicum.dto.HitStatsDto;
 import ru.practicum.service.model.Hit;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Repository
 public interface HitStatRepository extends JpaRepository<Hit, Long> {
 
     @Query("SELECT new ru.practicum.dto.HitStatsDto(h.app,h.uri, " +
@@ -19,7 +17,7 @@ public interface HitStatRepository extends JpaRepository<Hit, Long> {
             "ELSE COUNT(h.ip) END)) " +
             "FROM Hit h " +
             "WHERE h.timestamp BETWEEN :start AND :end " +
-            "GROUP BY h.app, h.uri, h.timestamp " +
+            "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(h.ip) desc ")
     List<HitStatsDto> getStatsWithoutUris(@Param("start") LocalDateTime start,
                                           @Param("end") LocalDateTime end,
@@ -31,7 +29,7 @@ public interface HitStatRepository extends JpaRepository<Hit, Long> {
             "FROM Hit h " +
             "WHERE h.timestamp BETWEEN :start AND :end " +
             "AND h.uri IN :uris " +
-            "GROUP BY h.app, h.uri, h.timestamp " +
+            "GROUP BY h.app, h.uri " +
             "ORDER BY COUNT(h.ip) desc ")
     List<HitStatsDto> getStatsWithUris(@Param("start") LocalDateTime start,
                                        @Param("end") LocalDateTime end,
