@@ -4,12 +4,14 @@ package ru.practicum.service.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 import ru.practicum.dto.HitStatsDto;
 import ru.practicum.service.model.Hit;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Repository
 public interface HitStatRepository extends JpaRepository<Hit, Long> {
 
     @Query("SELECT new ru.practicum.dto.HitStatsDto(h.app,h.uri, " +
